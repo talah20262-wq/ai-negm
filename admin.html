@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم المالك | NEGM ERP AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme admin-body">
+    <div class="dashboard-container">
+        <!-- القائمة الجانبية -->
+        <aside class="sidebar glass-panel">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-crown gold-glow"></i>
+                <span>لوحة المالك 👑</span>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="#dashboard" class="menu-item active" onclick="switchAdminTab('dashboard')"><i class="fa-solid fa-chart-pie"></i> الرئيسية</a>
+                <a href="#users" class="menu-item" onclick="switchAdminTab('users')"><i class="fa-solid fa-users"></i> إدارة المستخدمين</a>
+                <a href="#chats" class="menu-item" onclick="switchAdminTab('chats')"><i class="fa-solid fa-comments"></i> إدارة المحادثات</a>
+                <a href="#ai-monitor" class="menu-item" onclick="switchAdminTab('ai-monitor')"><i class="fa-solid fa-robot"></i> مراقبة الـ AI</a>
+                <a href="#notifications" class="menu-item" onclick="switchAdminTab('notifications')"><i class="fa-solid fa-bell"></i> الإشعارات والإعلانات</a>
+                <a href="#subscriptions" class="menu-item" onclick="switchAdminTab('subscriptions')"><i class="fa-solid fa-gem"></i> الاشتراكات</a>
+                <a href="#models" class="menu-item" onclick="switchAdminTab('models')"><i class="fa-solid fa-sliders"></i> إدارة النماذج</a>
+                <a href="#files" class="menu-item" onclick="switchAdminTab('files')"><i class="fa-solid fa-folder-open"></i> إدارة الملفات</a>
+                <a href="#logs" class="menu-item" onclick="switchAdminTab('logs')"><i class="fa-solid fa-shield-halved"></i> النشاط والحماية</a>
+                <a href="#settings" class="menu-item" onclick="switchAdminTab('settings')"><i class="fa-solid fa-gear"></i> الإعدادات</a>
+            </nav>
+        </aside>
+
+        <!-- المحتوى الرئيسي للمدير -->
+        <main class="main-content">
+            <header class="top-bar glass-panel">
+                <h2>نظام المراقبة والتحكم المباشر</h2>
+                <div class="top-bar-controls">
+                    <button class="btn btn-neon-blue" onclick="exportFullDatabase()"><i class="fa-solid fa-download"></i> تصدير قاعدة البيانات</button>
+                    <div class="maintenance-toggle">
+                        <span>وضع الصيانة:</span>
+                        <input type="checkbox" id="maintenance-toggle-switch" onchange="toggleMaintenanceMode(this.checked)">
+                    </div>
+                </div>
+            </header>
+
+            <!-- 1. الرئيسية (Dashboard) -->
+            <section id="dashboard-tab" class="admin-section active">
+                <div class="metrics-grid">
+                    <div class="metric-card glass-panel">
+                        <i class="fa-solid fa-users text-neon-blue"></i>
+                        <div class="info"><h3>المستخدمين</h3><p id="stat-users">0</p></div>
+                    </div>
+                    <div class="metric-card glass-panel">
+                        <i class="fa-solid fa-comments text-neon-green"></i>
+                        <div class="info"><h3>المحادثات</h3><p id="stat-chats">0</p></div>
+                    </div>
+                    <div class="metric-card glass-panel">
+                        <i class="fa-solid fa-robot text-neon-purple"></i>
+                        <div class="info"><h3>رسائل الـ AI</h3><p id="stat-ai-msg">0</p></div>
+                    </div>
+                    <div class="metric-card glass-panel">
+                        <i class="fa-solid fa-bolt text-gold"></i>
+                        <div class="info"><h3>الرسائل اليوم</h3><p id="stat-today-msg">0</p></div>
+                    </div>
+                    <div class="metric-card glass-panel">
+                        <i class="fa-solid fa-user-plus text-neon-pink"></i>
+                        <div class="info"><h3>المستخدمين الجدد</h3><p id="stat-new-users">0</p></div>
+                    </div>
+                    <div class="metric-card glass-panel">
+                        <i class="fa-solid fa-circle-dot text-neon-green pulse"></i>
+                        <div class="info"><h3>متصلون الآن</h3><p id="stat-online">0</p></div>
+                    </div>
+                    <div class="metric-card glass-panel">
+                        <i class="fa-solid fa-user-slash text-neon-red"></i>
+                        <div class="info"><h3>المحظورين</h3><p id="stat-banned">0</p></div>
+                    </div>
+                    <div class="metric-card glass-panel">
+                        <i class="fa-solid fa-database text-neon-cyan"></i>
+                        <div class="info"><h3>حجم البيانات</h3><p id="stat-db-size">24.5 MB</p></div>
+                    </div>
+                    <div class="metric-card glass-panel">
+                        <i class="fa-solid fa-server text-gold"></i>
+                        <div class="info"><h3>طلبات OpenRouter</h3><p id="stat-or-requests">0</p></div>
+                    </div>
+                    <div class="metric-card glass-panel">
+                        <i class="fa-solid fa-gauge-high text-neon-blue"></i>
+                        <div class="info"><h3>سرعة الرد</h3><p id="stat-speed">1.4s</p></div>
+                    </div>
+                </div>
+
+                <div class="charts-row">
+                    <div class="chart-box glass-panel"><canvas id="hourlyChart"></canvas></div>
+                    <div class="chart-box glass-panel"><canvas id="modelsChart"></canvas></div>
+                </div>
+            </section>
+
+            <!-- 2. إدارة المستخدمين -->
+            <section id="users-tab" class="admin-section">
+                <div class="glass-panel table-wrapper">
+                    <h3>إدارة شؤون المستخدمين</h3>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>الصورة</th><th>الاسم/UID</th><th>البريد/الدولة</th><th>الجهاز/IP</th><th>التسجيل/النشاط</th><th>الرسائل</th><th>الحالة</th><th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <!-- تعبئة تلقائية -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 3. إدارة المحادثات -->
+            <section id="chats-tab" class="admin-section">
+                <div class="glass-panel">
+                    <h3>البحث الشامل والمحادثات</h3>
+                    <div class="search-bar-box">
+                        <input type="text" id="admin-global-search" placeholder="ابحث في جميع محادثات النظام..." class="glass-input" onkeyup="adminGlobalSearch()">
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>العنوان</th><th>المالك</th><th>النموذج</th><th>الرسائل</th><th>التاريخ</th><th>الخيارات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="chats-table-body">
+                                <!-- تعبئة تلقائية -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- باقي الأقسام الإدارية المختصرة لتوفير المساحة والكفاءة -->
+            <section id="ai-monitor-tab" class="admin-section">
+                <div class="glass-panel"><h3>مراقبة استخدام الذكاء الاصطناعي والأدوات</h3><div class="charts-row"><div class="chart-box glass-panel"><canvas id="aiUsageChart"></canvas></div></div></div>
+            </section>
+
+            <section id="notifications-tab" class="admin-section">
+                <div class="glass-panel form-box">
+                    <h3>إرسال إشعار جماعي / إعلان</h3>
+                    <input type="text" id="notif-title" placeholder="العنوان" class="glass-input">
+                    <textarea id="notif-body" placeholder="محتوى الإشعار..." class="glass-input"></textarea>
+                    <button class="btn btn-neon-green" onclick="sendGlobalNotification()">بث الإشعار الفوري 🔔</button>
+                </div>
+            </section>
+
+            <section id="subscriptions-tab" class="admin-section">
+                <div class="glass-panel"><h3>إدارة الخطط والاشتراكات 🎁</h3><p>التحكم في تسعير الرسائل وصلاحيات الـ VIP.</p></div>
+            </section>
+
+            <section id="models-tab" class="admin-section">
+                <div class="glass-panel"><h3>إدارة ونمذجة الـ AI 🤖</h3><p>إضافة، إخفاء، أو ترتيب النماذج الافتراضية للنظام.</p></div>
+            </section>
+
+            <section id="files-tab" class="admin-section">
+                <div class="glass-panel"><h3>إدارة الملفات والمرفوعات (Cloudflare R2)</h3><ul id="files-list"></ul></div>
+            </section>
+
+            <section id="logs-tab" class="admin-section">
+                <div class="glass-panel">
+                    <h3>🛡️ سجل النشاط التدقيقي للحماية</h3>
+                    <div class="log-console" id="security-logs-console">
+                        <!-- سجل العمليات -->
+                    </div>
+                </div>
+            </section>
+
+            <section id="settings-tab" class="admin-section">
+                <div class="glass-panel form-box">
+                    <h3>⚙️ إعدادات المنصة الأساسية</h3>
+                    <input type="text" id="set-site-name" placeholder="اسم الموقع" class="glass-input" value="NEGM AI">
+                    <input type="text" id="set-site-logo" placeholder="رابط اللوجو" class="glass-input">
+                    <button class="btn btn-neon-blue" onclick="saveSiteSettings()">حفظ التعديلات</button>
+                </div>
+            </section>
+
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
