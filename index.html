@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEGM AI Chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    <div class="chat-container glass-container">
+        <!-- القائمة الجانبية للشات -->
+        <aside class="chat-sidebar glass-panel">
+            <button class="new-chat-btn"><i class="fa-solid fa-plus"></i> محادثة جديدة</button>
+            <div class="search-history-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="search-chat-input" placeholder="البحث داخل المحادثات...">
+            </div>
+            <div class="chats-history" id="chats-list-container">
+                <!-- تحميل المحادثات السابقة ديناميكياً -->
+            </div>
+            <div class="sidebar-footer">
+                <button id="theme-toggle-btn"><i class="fa-solid fa-moon"></i> المظهر</button>
+                <div class="user-profile-badge">
+                    <img id="user-avatar-local" src="https://via.placeholder.com/40" alt="Avatar">
+                    <span id="user-name-display">مستخدم تجريبي</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- منطقة الشات الرئيسية -->
+        <main class="chat-main">
+            <header class="chat-header glass-panel">
+                <div class="model-selector-wrapper">
+                    <label for="model-select"><i class="fa-solid fa-robot text-neon-blue"></i> النموذج النشط:</label>
+                    <select id="model-select" class="glass-input">
+                        <option value="google/gemini-2.5-flash">Gemini 2.5 Flash (الافتراضي)</option>
+                        <option value="openai/gpt-4o">GPT-4o</option>
+                        <option value="anthropic/claude-3.5-sonnet">Claude 3.5 Sonnet</option>
+                        <option value="deepseek/deepseek-chat">DeepSeek V3</option>
+                    </select>
+                </div>
+                <div class="system-status-indicator" id="maintenance-banner" style="display:none;">
+                    <i class="fa-solid fa-triangle-exclamation pulse-red"></i> وضع الصيانة نشط
+                </div>
+            </header>
+
+            <div class="messages-area" id="messages-display-area">
+                <div class="welcome-box">
+                    <i class="fa-solid fa-wand-magic-sparkles gold-glow" style="font-size: 3rem;"></i>
+                    <h2>مرحباً بك في NEGM AI Chat</h2>
+                    <p>اسأل عن أي شيء، أو اكتب الكود السري إذا كنت المالك.</p>
+                </div>
+            </div>
+
+            <footer class="chat-footer">
+                <div class="input-container-wrapper glass-panel">
+                    <div class="preview-uploaded-image" id="image-preview-zone" style="display:none;">
+                        <img id="temp-uploaded-img" src="" alt="preview">
+                        <button onclick="clearUploadedImage()"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="input-row">
+                        <label for="file-upload-input" class="attach-btn"><i class="fa-solid fa-paperclip"></i></label>
+                        <input type="file" id="file-upload-input" accept="image/*" style="display:none;">
+                        
+                        <textarea id="chat-user-textarea" placeholder="اكتب رسالتك هنا... (اكتب 2009 للدخول كمالك)" rows="1"></textarea>
+                        
+                        <button id="send-chat-message-btn" class="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </footer>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
