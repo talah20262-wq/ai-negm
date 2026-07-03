@@ -3,75 +3,732 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEGM AI Chat</title>
+    
+    <title id="meta-title">NEGM AI Chat | الذكاء الاصطناعي الخارق</title>
+    <meta name="description" content="منصة NEGM AI المتطورة للمحادثة الذكية وإدارة الأعمال الذكية">
+    <meta property="og:title" content="NEGM AI Chat | المنصة الرسمية">
+    <meta property="og:description" content="تحدث مع أقوى نماذج الذكاء الاصطناعي في منصة واحدة زجاجية وسينمائية فاخرة.">
+    <meta property="og:image" id="meta-og-image" content="logo.jpg">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-pink: #ff007f;
+            --neon-green: #00ff87;
+            --gold: #ffd700;
+            --bg-glass: rgba(6, 10, 23, 0.65);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background: #030712;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 🎬 خلفية سينمائية متحركة (الخيوط والجزيئات) */
+        #bg-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* الحاوية الزجاجية الكبرى الفاخرة */
+        .app-outer {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            width: 96vw;
+            height: 92vh;
+            max-width: 1500px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--border-glass);
+            border-radius: 28px;
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+
+        /* القائمة الجانبية المضيئة */
+        aside.sidebar {
+            width: 320px;
+            border-left: 1px solid var(--border-glass);
+            background: rgba(4, 7, 18, 0.5);
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+        }
+
+        .brand-zone {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .brand-zone img {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            object-fit: cover;
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        .brand-zone h2 {
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+
+        .new-chat-btn {
+            background: linear-gradient(135deg, var(--neon-blue), #0055ff);
+            color: #000;
+            font-weight: 900;
+            border: none;
+            padding: 15px;
+            border-radius: 14px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+            transition: 0.3s;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .new-chat-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 25px var(--neon-blue);
+            color: #fff;
+        }
+
+        /* 👑 لوحة تحكم المالك المدمجة */
+        .owner-control-panel {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.08), rgba(0, 0, 0, 0.6));
+            border: 1px solid var(--gold);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: none; /* تفتح بكلمة السر */
+        }
+
+        .owner-panel-title {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-shadow: 0 0 5px var(--gold);
+        }
+
+        .owner-inputs-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .owner-field {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            color: #fff;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .owner-field:focus { border-color: var(--gold); }
+
+        .owner-actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .owner-btn-action {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 8px;
+            font-size: 11px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .owner-btn-action:hover {
+            background: var(--gold);
+            color: #000;
+            font-weight: bold;
+        }
+
+        .history-container {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            padding: 12px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid transparent;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .history-item:hover {
+            background: rgba(0, 240, 255, 0.05);
+            border-color: rgba(0, 240, 255, 0.2);
+        }
+
+        /* الواجهة الرئيسية للشات */
+        main.main-chat-window {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        header.chat-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border-glass);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(4, 7, 18, 0.2);
+        }
+
+        .model-picker-select {
+            background: #090d1a;
+            border: 1px solid var(--border-glass);
+            color: var(--text-main);
+            padding: 12px 20px;
+            border-radius: 12px;
+            outline: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .maintenance-alert-banner {
+            background: rgba(255, 0, 127, 0.15);
+            border: 1px solid var(--neon-pink);
+            color: var(--neon-pink);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            display: none;
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
+        }
+
+        .messages-viewport {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .screen-empty-welcome {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        .screen-empty-welcome i {
+            font-size: 4.5rem;
+            background: linear-gradient(to right, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 15px var(--neon-blue));
+        }
+
+        /* فقاعات المحادثة السينمائية */
+        .bubble-wrapper {
+            display: flex;
+            width: 100%;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        .bubble-wrapper.user-side { justify-content: flex-start; }
+        .bubble-wrapper.ai-side { justify-content: flex-end; }
+
+        .chat-bubble {
+            max-width: 75%;
+            padding: 16px 20px;
+            border-radius: 20px;
+            line-height: 1.7;
+            font-size: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .user-side .chat-bubble {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-glass);
+            border-top-right-radius: 4px;
+        }
+
+        .ai-side .chat-bubble {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.12), rgba(255, 0, 127, 0.05));
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            border-top-left-radius: 4px;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+        }
+
+        /* شريط الإدخال الفاخر السفلي */
+        footer.input-footer-area {
+            padding: 24px;
+        }
+
+        .bar-input-container {
+            background: rgba(9, 13, 26, 0.85);
+            border: 1px solid var(--border-glass);
+            border-radius: 18px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 10px rgba(255,255,255,0.02);
+        }
+
+        .bar-input-container textarea {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #fff;
+            outline: none;
+            resize: none;
+            font-size: 16px;
+            height: 26px;
+        }
+
+        .btn-icon-trigger {
+            color: var(--text-muted);
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-icon-trigger:hover { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue); }
+
+        .btn-send-rocket {
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink));
+            color: #000;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .btn-send-rocket:hover {
+            transform: scale(1.08) rotate(-15deg);
+            box-shadow: 0 0 20px var(--neon-pink);
+            color: #fff;
+        }
+
+        .uploaded-preview-holder {
+            display: none;
+            position: relative;
+            margin-bottom: 12px;
+            padding-right: 10px;
+        }
+
+        .uploaded-preview-holder img {
+            max-width: 90px;
+            border-radius: 10px;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
-<body class="dark-theme">
-    <div class="chat-container glass-container">
-        <!-- القائمة الجانبية للشات -->
-        <aside class="chat-sidebar glass-panel">
-            <button class="new-chat-btn"><i class="fa-solid fa-plus"></i> محادثة جديدة</button>
-            <div class="search-history-box">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="search-chat-input" placeholder="البحث داخل المحادثات...">
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="app-outer">
+        <aside class="sidebar">
+            <div class="brand-zone">
+                <img id="site-logo-img" src="logo.jpg" alt="Logo">
+                <h2 id="site-name-title">NEGM AI</h2>
             </div>
-            <div class="chats-history" id="chats-list-container">
-                <!-- تحميل المحادثات السابقة ديناميكياً -->
-            </div>
-            <div class="sidebar-footer">
-                <button id="theme-toggle-btn"><i class="fa-solid fa-moon"></i> المظهر</button>
-                <div class="user-profile-badge">
-                    <img id="user-avatar-local" src="https://via.placeholder.com/40" alt="Avatar">
-                    <span id="user-name-display">مستخدم تجريبي</span>
+
+            <button class="new-chat-btn" onclick="createNewChatSession()"><i class="fa-solid fa-plus"></i> محادثة جديدة</button>
+            
+            <div class="owner-control-panel" id="ownerControlPanel">
+                <div class="owner-panel-title"><i class="fa-solid fa-crown"></i> الإدارة العليا للمالك</div>
+                <div class="owner-inputs-row">
+                    <input type="text" id="owner-site-name-input" placeholder="تغيير اسم الموقع..." class="owner-field">
+                    <input type="text" id="owner-logo-url-input" placeholder="اسم أو رابط اللوجو الجديد..." class="owner-field">
+                </div>
+                <div class="owner-actions-grid">
+                    <button class="owner-btn-action" onclick="applyOwnerCustomizations()">حفظ وتطبيق</button>
+                    <button class="owner-btn-action" onclick="toggleSystemMaintenanceMode()">وضع الصيانة</button>
+                    <button class="owner-btn-action" onclick="exportDatabaseState()">تصدير الداتا</button>
+                    <button class="owner-btn-action" onclick="wipeLocalCacheData()">تصفير الكاش</button>
                 </div>
             </div>
+
+            <div class="history-container" id="historyViewBox">
+                </div>
         </aside>
 
-        <!-- منطقة الشات الرئيسية -->
-        <main class="chat-main">
-            <header class="chat-header glass-panel">
-                <div class="model-selector-wrapper">
-                    <label for="model-select"><i class="fa-solid fa-robot text-neon-blue"></i> النموذج النشط:</label>
-                    <select id="model-select" class="glass-input">
-                        <option value="google/gemini-2.5-flash">Gemini 2.5 Flash (الافتراضي)</option>
-                        <option value="openai/gpt-4o">GPT-4o</option>
-                        <option value="anthropic/claude-3.5-sonnet">Claude 3.5 Sonnet</option>
+        <main class="main-chat-window">
+            <header class="chat-header">
+                <div>
+                    <select class="model-picker-select" id="modelSelectionNode">
+                        <option value="google/gemini-2.5-flash">Gemini 2.5 Flash</option>
+                        <option value="openai/gpt-4o">GPT-4o Premium</option>
                         <option value="deepseek/deepseek-chat">DeepSeek V3</option>
                     </select>
                 </div>
-                <div class="system-status-indicator" id="maintenance-banner" style="display:none;">
-                    <i class="fa-solid fa-triangle-exclamation pulse-red"></i> وضع الصيانة نشط
+                
+                <div class="maintenance-alert-banner" id="maintenanceAlertBanner">
+                    <i class="fa-solid fa-triangle-exclamation"></i> وضع الصيانة قيد التشغيل الفوري
                 </div>
             </header>
 
-            <div class="messages-area" id="messages-display-area">
-                <div class="welcome-box">
-                    <i class="fa-solid fa-wand-magic-sparkles gold-glow" style="font-size: 3rem;"></i>
-                    <h2>مرحباً بك في NEGM AI Chat</h2>
-                    <p>اسأل عن أي شيء، أو اكتب الكود السري إذا كنت المالك.</p>
+            <div class="messages-viewport" id="messagesViewportContainer">
+                <div class="screen-empty-welcome" id="emptyWelcomeView">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <h2 id="welcome-message-h2">مرحباً بك في سيرفر NEGM AI المطور</h2>
+                    <p>الخلفية متفاعلة والذكاء الاصطناعي مهيأ وجاهز لتقديم أقصى أداء ثوري...</p>
                 </div>
             </div>
 
-            <footer class="chat-footer">
-                <div class="input-container-wrapper glass-panel">
-                    <div class="preview-uploaded-image" id="image-preview-zone" style="display:none;">
-                        <img id="temp-uploaded-img" src="" alt="preview">
-                        <button onclick="clearUploadedImage()"><i class="fa-solid fa-xmark"></i></button>
-                    </div>
-                    <div class="input-row">
-                        <label for="file-upload-input" class="attach-btn"><i class="fa-solid fa-paperclip"></i></label>
-                        <input type="file" id="file-upload-input" accept="image/*" style="display:none;">
-                        
-                        <textarea id="chat-user-textarea" placeholder="اكتب رسالتك هنا... (اكتب 2009 للدخول كمالك)" rows="1"></textarea>
-                        
-                        <button id="send-chat-message-btn" class="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
-                    </div>
+            <footer class="input-footer-area">
+                <div class="uploaded-preview-holder" id="uploadedPreviewHolder">
+                    <img src="" id="targetImgPreviewNode" alt="Preview">
+                </div>
+                <div class="bar-input-container">
+                    <label for="fileAttachmentTrigger" class="btn-icon-trigger"><i class="fa-solid fa-paperclip"></i></label>
+                    <input type="file" id="fileAttachmentTrigger" accept="image/*" style="display: none;" onchange="handleIncomingImageUpload(this)">
+                    
+                    <textarea id="mainChatTextInputNode" placeholder="اكتب سؤالك الخارق هنا..."></textarea>
+                    
+                    <button class="btn-send-rocket" onclick="commitUserMessageAction()"><i class="fa-solid fa-paper-plane"></i></button>
                 </div>
             </footer>
         </main>
     </div>
-    <script src="app.js"></script>
+
+    <script>
+        const CLOUDFLARE_WORKER_ROUTE = "https://lively-night-9b33.talah2026-2.workers.dev";
+        const FIREBASE_REALTIME_ROUTE = "https://ai-negm-default-rtdb.firebaseio.com";
+        
+        let globalActiveImageBase64 = null;
+        let systemConversationsCache = [];
+        let activeChatSessionId = null;
+
+        // --- 1. 🎬 كود محرك السينما المتحرك (Interactive Canvas Lines) ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let points = [];
+        const maxPoints = 55;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        for (let i = 0; i < maxPoints; i++) {
+            points.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.9,
+                vy: (Math.random() - 0.5) * 0.9
+            });
+        }
+
+        function animateCinemaBackground() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(0, 240, 255, 0.4)";
+            
+            for (let i = 0; i < maxPoints; i++) {
+                let p = points[i];
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                for (let j = i + 1; j < maxPoints; j++) {
+                    let p2 = points[j];
+                    let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if (dist < 135) {
+                        ctx.strokeStyle = `rgba(0, 240, 255, ${1 - dist / 135 * 0.18})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateCinemaBackground);
+        }
+        animateCinemaBackground();
+
+        // --- 2. 💾 نظام حفظ واسترجاع التهيئة لمنع ضياع البيانات (LocalStorage) ---
+        function initAppPersistenceState() {
+            // استرجاع الإعدادات المخصصة للمالك إن وجدت
+            if(localStorage.getItem("negm_site_name")) {
+                const customName = localStorage.getItem("negm_site_name");
+                document.getElementById("site-name-title").innerText = customName;
+                document.getElementById("welcome-message-h2").innerText = `مرحباً بك في سيرفر ${customName} المطور`;
+                document.getElementById("meta-title").innerText = `${customName} | الذكاء الاصطناعي الخارق`;
+            }
+            if(localStorage.getItem("negm_site_logo")) {
+                const customLogo = localStorage.getItem("negm_site_logo");
+                document.getElementById("site-logo-img").src = customLogo;
+                document.getElementById("meta-og-image").content = customLogo;
+            }
+
+            // استعادة المحادثات السابقة بالكامل لعدم ضياع أي شيء بالريفريش
+            if(localStorage.getItem("negm_chat_history")) {
+                systemConversationsCache = JSON.parse(localStorage.getItem("negm_chat_history"));
+                renderConversationsSidebar();
+            }
+        }
+
+        // --- 3. 👑 إدارة وصلاحيات لوحة المالك ---
+        function applyOwnerCustomizations() {
+            const nameInp = document.getElementById("owner-site-name-input").value.trim();
+            const logoInp = document.getElementById("owner-logo-url-input").value.trim();
+
+            if(nameInp) {
+                localStorage.setItem("negm_site_name", nameInp);
+                document.getElementById("site-name-title").innerText = nameInp;
+            }
+            if(logoInp) {
+                localStorage.setItem("negm_site_logo", logoInp);
+                document.getElementById("site-logo-img").src = logoInp;
+            }
+            alert("👑 تم حفظ التخصيصات الداخلية للمالك في كاش المتصفح والنظام بنجاح!");
+        }
+
+        function toggleSystemMaintenanceMode() {
+            const banner = document.getElementById("maintenanceAlertBanner");
+            const currentStatus = banner.style.display === "flex";
+            banner.style.display = currentStatus ? "none" : "flex";
+            
+            fetch(`${FIREBASE_REALTIME_ROUTE}/site_settings/maintenance.json`, {
+                method: "PUT",
+                body: JSON.stringify(!currentStatus)
+            });
+        }
+
+        // --- 4. معالجة عمليات الشات والرفع ---
+        function handleIncomingImageUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    globalActiveImageBase64 = e.target.result;
+                    document.getElementById("targetImgPreviewNode").src = globalActiveImageBase64;
+                    document.getElementById("uploadedPreviewHolder").style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function commitUserMessageAction() {
+            const txtNode = document.getElementById("mainChatTextInputNode");
+            const promptText = txtNode.value.trim();
+            if(!promptText && !globalActiveImageBase64) return;
+
+            // 👑 الشفرة السرية للدخول للمالك
+            if (promptText === "2009") {
+                document.getElementById("ownerControlPanel").style.display = "block";
+                txtNode.value = "";
+                alert("👑 تم التحقق من الكود السري بنجاح: أهلاً بك يا نجم في الخلوة الإدارية للمالك.");
+                return;
+            }
+
+            document.getElementById("emptyWelcomeView").style.display = "none";
+            
+            if(!activeChatSessionId) {
+                activeChatSessionId = "chat_" + Date.now();
+            }
+
+            appendBubbleToUI("user", promptText, globalActiveImageBase64);
+            txtNode.value = "";
+
+            // حفظ الرسالة في الكاش قبل الإرسال لمنع ضياعها
+            storeMessageInCache(activeChatSessionId, "user", promptText, globalActiveImageBase64);
+
+            const imgPayload = globalActiveImageBase64;
+            globalActiveImageBase64 = null;
+            document.getElementById("uploadedPreviewHolder").style.display = "none";
+
+            try {
+                const chosenModel = document.getElementById("modelSelectionNode").value;
+                const response = await fetch(CLOUDFLARE_WORKER_ROUTE, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        model: chosenModel,
+                        messages: [{ role: "user", content: promptText }]
+                    })
+                });
+
+                const data = await response.json();
+                const aiResponseContent = data.choices[0].message.content;
+                
+                appendBubbleToUI("ai", aiResponseContent);
+                storeMessageInCache(activeChatSessionId, "ai", aiResponseContent, null);
+
+                // مزامنة خلفية مع فايربيز
+                syncLogWithFirebase(promptText);
+
+            } catch (err) {
+                appendBubbleToUI("ai", "تعذر الحصول على استجابة فورية من سيرفر الـ Worker الخاص بك.");
+            }
+        }
+
+        function appendBubbleToUI(role, text, img = null) {
+            const viewport = document.getElementById("messagesViewportContainer");
+            const wrapper = document.createElement("div");
+            wrapper.className = `bubble-wrapper ${role === 'user' ? 'user-side' : 'ai-side'}`;
+            
+            let bubbleMarkup = `<div class="chat-bubble"><p>${text}</p>`;
+            if(img) {
+                bubbleMarkup += `<img src="${img}" style="max-width:100%; border-radius:12px; margin-top:10px; display:block; border:1px solid rgba(255,255,255,0.1);">`;
+            }
+            bubbleMarkup += `</div>`;
+            
+            wrapper.innerHTML = bubbleMarkup;
+            viewport.appendChild(wrapper);
+            viewport.scrollTop = viewport.scrollHeight;
+        }
+
+        function storeMessageInCache(chatId, role, text, img) {
+            let chat = systemConversationsCache.find(c => c.id === chatId);
+            if(!chat) {
+                chat = { id: chatId, title: text ? text.substring(0, 25) + "..." : "معاينة صورة", messages: [] };
+                systemConversationsCache.push(chat);
+            }
+            chat.messages.push({ role, text, img });
+            localStorage.setItem("negm_chat_history", JSON.stringify(systemConversationsCache));
+            renderConversationsSidebar();
+        }
+
+        function renderConversationsSidebar() {
+            const viewBox = document.getElementById("historyViewBox");
+            viewBox.innerHTML = "";
+            systemConversationsCache.forEach(chat => {
+                const item = document.createElement("div");
+                item.className = "history-item";
+                item.innerText = chat.title;
+                item.onclick = () => loadActiveChatFromCache(chat.id);
+                viewBox.appendChild(item);
+            });
+        }
+
+        function loadActiveChatFromCache(chatId) {
+            activeChatSessionId = chatId;
+            document.getElementById("emptyWelcomeView").style.display = "none";
+            const viewport = document.getElementById("messagesViewportContainer");
+            // مسح الشاشة الحالية وعرض القديم المخزن
+            viewport.innerHTML = "";
+            const chat = systemConversationsCache.find(c => c.id === chatId);
+            if(chat) {
+                chat.messages.forEach(m => {
+                    appendBubbleToUI(m.role, m.text, m.img);
+                });
+            }
+        }
+
+        function createNewChatSession() {
+            activeChatSessionId = null;
+            document.getElementById("messagesViewportContainer").innerHTML = `
+                <div class="screen-empty-welcome" id="emptyWelcomeView">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <h2 id="welcome-message-h2">مرحباً بك في سيرفر NEGM AI المطور</h2>
+                    <p>الخلفية متفاعلة والذكاء الاصطناعي مهيأ وجاهز لتقديم أقصى أداء ثوري...</p>
+                </div>`;
+            initAppPersistenceState();
+        }
+
+        function exportDatabaseState() {
+            const blob = new Blob([JSON.stringify(systemConversationsCache, null, 2)], {type : 'application/json'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `backup_negm_ai_${Date.now()}.json`;
+            a.click();
+        }
+
+        function wipeLocalCacheData() {
+            if(confirm("هل تود مسح الذاكرة المحلية نهائياً؟")) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        function syncLogWithFirebase(msg) {
+            fetch(`${FIREBASE_REALTIME_ROUTE}/logs.json`, {
+                method: "POST",
+                body: JSON.stringify({ event: "chat_query", query: msg, time: new Date().toISOString() })
+            });
+        }
+
+        // تشغيل فحص البيانات عند التحميل الأول
+        window.addEventListener("DOMContentLoaded", initAppPersistenceState);
+    </script>
 </body>
 </html>
