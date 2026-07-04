@@ -3,477 +3,567 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title id="meta-title">NEGM AI Chat | الذكاء الاصطناعي الخارق</title>
-    <meta name="description" content="منصة NEGM AI المتطورة للمحادثة الذكية وإدارة الأعمال الذكية">
-    <meta property="og:title" content="NEGM AI Chat | المنصة الرسمية">
-    <meta property="og:description" content="تحدث مع أقوى نماذج الذكاء الاصطناعي في منصة واحدة زجاجية وسينمائية فاخرة.">
-    <meta property="og:image" id="meta-og-image" content="logo.jpg">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    
+    <title>AI NEGM V3 - Matrix Command Center</title>
     <style>
         :root {
-            --neon-blue: #00f0ff;
-            --neon-pink: #ff007f;
-            --neon-green: #00ff87;
-            --gold: #ffd700;
-            --bg-glass: rgba(6, 10, 23, 0.65);
-            --border-glass: rgba(255, 255, 255, 0.08);
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
+            --bg-base: #05050a;
+            --bg-surface: rgba(13, 13, 26, 0.45);
+            --bg-surface-elevated: rgba(20, 20, 40, 0.7);
+            --cyber-gold: #d4af37;
+            --cyber-gold-glow: rgba(212, 175, 55, 0.4);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0c0;
+            --accent-red: #ff4a4a;
+            --accent-green: #39ff14;
+            --border-color: rgba(212, 175, 55, 0.2);
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Tajawal', sans-serif;
+            user-select: none;
         }
 
         body {
-            background: #030712;
-            color: var(--text-main);
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-family);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
         }
 
-        /* 🎬 خلفية سينمائية متحركة (الخيوط والجزيئات) */
-        #bg-canvas {
+        /* 🎬 Cinematic Background Stack */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -3;
+            background: radial-gradient(circle at center, #0f0f26 0%, #05050a 100%);
+        }
+
+        .matrix-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        .mouse-glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, rgba(0,0,0,0) 70%);
+            pointer-events: none;
+            z-index: -1;
+            transform: translate(-50%, -50%);
+            top: -1000px;
+            left: -1000px;
+            transition: opacity 0.3s;
+        }
+
+        /* Glassmorphism Containers */
+        .glass-panel {
+            background: var(--bg-surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* Auth Screen Styling */
+        #auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
             position: absolute;
             top: 0;
             left: 0;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10;
+        }
+
+        .auth-card {
             width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
+            max-width: 420px;
+            padding: 40px;
+            text-align: center;
+            animation: cardEntrance 0.8s ease-out;
         }
 
-        /* الحاوية الزجاجية الكبرى الفاخرة */
-        .app-outer {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            width: 96vw;
-            height: 92vh;
-            max-width: 1500px;
-            background: var(--bg-glass);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--border-glass);
-            border-radius: 28px;
-            box-shadow: 0 0 40px rgba(0, 240, 255, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.05);
-            overflow: hidden;
-        }
-
-        /* القائمة الجانبية المضيئة */
-        aside.sidebar {
-            width: 320px;
-            border-left: 1px solid var(--border-glass);
-            background: rgba(4, 7, 18, 0.5);
-            display: flex;
-            flex-direction: column;
-            padding: 24px;
-        }
-
-        .brand-zone {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-glass);
-        }
-
-        .brand-zone img {
-            width: 50px;
-            height: 50px;
-            border-radius: 14px;
-            object-fit: cover;
-            border: 2px solid var(--neon-blue);
-            box-shadow: 0 0 15px var(--neon-blue);
-        }
-
-        .brand-zone h2 {
-            font-size: 20px;
-            font-weight: 900;
-            letter-spacing: 0.5px;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
-        }
-
-        .new-chat-btn {
-            background: linear-gradient(135deg, var(--neon-blue), #0055ff);
-            color: #000;
-            font-weight: 900;
-            border: none;
-            padding: 15px;
-            border-radius: 14px;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
-            transition: 0.3s;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .new-chat-btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 25px var(--neon-blue);
-            color: #fff;
-        }
-
-        /* 👑 لوحة تحكم المالك المدمجة */
-        .owner-control-panel {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.08), rgba(0, 0, 0, 0.6));
-            border: 1px solid var(--gold);
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
-            border-radius: 16px;
-            padding: 15px;
-            margin-bottom: 20px;
-            display: none; /* تفتح بكلمة السر */
-        }
-
-        .owner-panel-title {
-            color: var(--gold);
-            font-weight: 700;
-            font-size: 14px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-shadow: 0 0 5px var(--gold);
-        }
-
-        .owner-inputs-row {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+        .auth-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--text-primary);
+            text-shadow: 0 0 15px var(--cyber-gold-glow);
             margin-bottom: 10px;
         }
 
-        .owner-field {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-glass);
-            color: #fff;
-            padding: 8px;
-            border-radius: 8px;
-            font-size: 12px;
-            outline: none;
+        .auth-logo span {
+            color: var(--cyber-gold);
         }
 
-        .owner-field:focus { border-color: var(--gold); }
-
-        .owner-actions-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
+        .auth-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
         }
 
-        .owner-btn-action {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #fff;
-            padding: 8px;
-            font-size: 11px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .owner-btn-action:hover {
-            background: var(--gold);
-            color: #000;
-            font-weight: bold;
-        }
-
-        .history-container {
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .history-item {
-            padding: 12px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid transparent;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .history-item:hover {
-            background: rgba(0, 240, 255, 0.05);
-            border-color: rgba(0, 240, 255, 0.2);
-        }
-
-        /* الواجهة الرئيسية للشات */
-        main.main-chat-window {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
+        .input-group {
+            margin-bottom: 20px;
             position: relative;
+            text-align: right;
         }
 
-        header.chat-header {
-            padding: 20px 30px;
-            border-bottom: 1px solid var(--border-glass);
+        .input-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--cyber-gold);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .cyber-input {
+            width: 100%;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .cyber-input:focus {
+            border-color: var(--cyber-gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .btn-matrix {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.05) 100%);
+            border: 1px solid var(--cyber-gold);
+            border-radius: 8px;
+            color: var(--cyber-gold);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-matrix:hover {
+            background: var(--cyber-gold);
+            color: var(--bg-base);
+            box-shadow: 0 0 25px var(--cyber-gold-glow);
+            transform: scale(1.02);
+        }
+
+        .error-msg {
+            color: var(--accent-red);
+            font-size: 0.85rem;
+            margin-top: 15px;
+            min-height: 20px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* Dashboard Interface */
+        #dashboard-container {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            padding: 25px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(4, 7, 18, 0.2);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
         }
 
-        .model-picker-select {
-            background: #090d1a;
-            border: 1px solid var(--border-glass);
-            color: var(--text-main);
-            padding: 12px 20px;
-            border-radius: 12px;
-            outline: none;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .maintenance-alert-banner {
-            background: rgba(255, 0, 127, 0.15);
-            border: 1px solid var(--neon-pink);
-            color: var(--neon-pink);
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 12px;
-            display: none;
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
-        }
-
-        .messages-viewport {
-            flex: 1;
-            padding: 30px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .screen-empty-welcome {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            text-align: center;
-        }
-
-        .screen-empty-welcome i {
-            font-size: 4.5rem;
-            background: linear-gradient(to right, var(--neon-blue), var(--neon-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 15px var(--neon-blue));
-        }
-
-        /* فقاعات المحادثة السينمائية */
-        .bubble-wrapper {
-            display: flex;
-            width: 100%;
-            animation: fadeIn 0.4s ease forwards;
-        }
-        .bubble-wrapper.user-side { justify-content: flex-start; }
-        .bubble-wrapper.ai-side { justify-content: flex-end; }
-
-        .chat-bubble {
-            max-width: 75%;
-            padding: 16px 20px;
-            border-radius: 20px;
-            line-height: 1.7;
-            font-size: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        }
-
-        .user-side .chat-bubble {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--border-glass);
-            border-top-right-radius: 4px;
-        }
-
-        .ai-side .chat-bubble {
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.12), rgba(255, 0, 127, 0.05));
-            border: 1px solid rgba(0, 240, 255, 0.25);
-            border-top-left-radius: 4px;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
-        }
-
-        /* شريط الإدخال الفاخر السفلي */
-        footer.input-footer-area {
-            padding: 24px;
-        }
-
-        .bar-input-container {
-            background: rgba(9, 13, 26, 0.85);
-            border: 1px solid var(--border-glass);
-            border-radius: 18px;
-            padding: 12px 20px;
+        .system-status {
             display: flex;
             align-items: center;
             gap: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 10px rgba(255,255,255,0.02);
         }
 
-        .bar-input-container textarea {
-            flex: 1;
-            background: none;
-            border: none;
-            color: #fff;
-            outline: none;
-            resize: none;
-            font-size: 16px;
-            height: 26px;
-        }
-
-        .btn-icon-trigger {
-            color: var(--text-muted);
-            font-size: 1.3rem;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn-icon-trigger:hover { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue); }
-
-        .btn-send-rocket {
-            background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink));
-            color: #000;
-            border: none;
-            width: 44px;
-            height: 44px;
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-green);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 1.1rem;
+            box-shadow: 0 0 10px var(--accent-green);
         }
 
-        .btn-send-rocket:hover {
-            transform: scale(1.08) rotate(-15deg);
-            box-shadow: 0 0 20px var(--neon-pink);
-            color: #fff;
+        /* Admin Grid Layout */
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
         }
 
-        .uploaded-preview-holder {
-            display: none;
+        .metric-card {
+            padding: 20px;
             position: relative;
-            margin-bottom: 12px;
+        }
+
+        .metric-title {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .metric-value.gold {
+            color: var(--cyber-gold);
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Large Sections Layout */
+        .content-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .main-panel, .side-panel {
+            padding: 25px;
+            min-height: 400px;
+        }
+
+        .panel-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--cyber-gold);
+            border-right: 3px solid var(--cyber-gold);
             padding-right: 10px;
         }
 
-        .uploaded-preview-holder img {
-            max-width: 90px;
-            border-radius: 10px;
-            border: 1px solid var(--neon-blue);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+        /* Custom UI Tables */
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+            font-size: 0.9rem;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
+        .matrix-table th {
+            padding: 12px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+            font-weight: 600;
+        }
+
+        .matrix-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            color: #e0e0e0;
+        }
+
+        .matrix-table tr:hover td {
+            background: rgba(212, 175, 55, 0.03);
+            color: #ffffff;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-vip { background: rgba(212, 175, 55, 0.2); color: var(--cyber-gold); border: 1px solid var(--cyber-gold); }
+        .badge-pro { background: rgba(0, 150, 255, 0.2); color: #0096ff; }
+        .badge-free { background: rgba(120, 120, 120, 0.2); color: #b0b0b0; }
+
+        /* Realtime Console Log */
+        .console-box {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 6px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            height: 280px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .console-line {
+            margin-bottom: 6px;
+            color: #c0c0c0;
+        }
+
+        .console-line span.gold { color: var(--cyber-gold); }
+        .console-line span.green { color: var(--accent-green); }
+
+        /* Animations */
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Control Buttons Inside Dashboard */
+        .action-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: var(--cyber-gold);
+            color: black;
+            box-shadow: 0 0 10px var(--cyber-gold-glow);
+        }
+
+        @media (max-width: 1024px) {
+            .matrix-grid { grid-template-columns: repeat(2, 1fr); }
+            .content-layout { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="bg-canvas"></canvas>
+    <!-- 🎬 BACKGROUND INTERFACE -->
+    <div class="matrix-bg"></div>
+    <canvas class="matrix-particles" id="canvas-particles"></canvas>
+    <div class="mouse-glow" id="mouse-glow"></div>
 
-    <div class="app-outer">
-        <aside class="sidebar">
-            <div class="brand-zone">
-                <img id="site-logo-img" src="logo.jpg" alt="Logo">
-                <h2 id="site-name-title">NEGM AI</h2>
-            </div>
-
-            <button class="new-chat-btn" onclick="createNewChatSession()"><i class="fa-solid fa-plus"></i> محادثة جديدة</button>
+    <!-- 🔐 OWNER AUTHENTICATION VIEW -->
+    <div id="auth-container">
+        <div class="auth-card glass-panel">
+            <div class="auth-logo">AI NEGM <span>V3</span></div>
+            <div class="auth-subtitle">بوابة تحكم النظام للمالك المصرح له فقط</div>
             
-            <div class="owner-control-panel" id="ownerControlPanel">
-                <div class="owner-panel-title"><i class="fa-solid fa-crown"></i> الإدارة العليا للمالك</div>
-                <div class="owner-inputs-row">
-                    <input type="text" id="owner-site-name-input" placeholder="تغيير اسم الموقع..." class="owner-field">
-                    <input type="text" id="owner-logo-url-input" placeholder="اسم أو رابط اللوجو الجديد..." class="owner-field">
-                </div>
-                <div class="owner-actions-grid">
-                    <button class="owner-btn-action" onclick="applyOwnerCustomizations()">حفظ وتطبيق</button>
-                    <button class="owner-btn-action" onclick="toggleSystemMaintenanceMode()">وضع الصيانة</button>
-                    <button class="owner-btn-action" onclick="exportDatabaseState()">تصدير الداتا</button>
-                    <button class="owner-btn-action" onclick="wipeLocalCacheData()">تصفير الكاش</button>
-                </div>
+            <div class="input-group">
+                <label class="input-label">رمز الدخول الأمني المتطور</label>
+                <input type="password" id="owner-code" class="cyber-input" maxlength="4" placeholder="••••" autocomplete="off">
             </div>
 
-            <div class="history-container" id="historyViewBox">
-                </div>
-        </aside>
-
-        <main class="main-chat-window">
-            <header class="chat-header">
-                <div>
-                    <select class="model-picker-select" id="modelSelectionNode">
-                        <option value="google/gemini-2.5-flash">Gemini 2.5 Flash</option>
-                        <option value="openai/gpt-4o">GPT-4o Premium</option>
-                        <option value="deepseek/deepseek-chat">DeepSeek V3</option>
-                    </select>
-                </div>
-                
-                <div class="maintenance-alert-banner" id="maintenanceAlertBanner">
-                    <i class="fa-solid fa-triangle-exclamation"></i> وضع الصيانة قيد التشغيل الفوري
-                </div>
-            </header>
-
-            <div class="messages-viewport" id="messagesViewportContainer">
-                <div class="screen-empty-welcome" id="emptyWelcomeView">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    <h2 id="welcome-message-h2">مرحباً بك في سيرفر NEGM AI المطور</h2>
-                    <p>الخلفية متفاعلة والذكاء الاصطناعي مهيأ وجاهز لتقديم أقصى أداء ثوري...</p>
-                </div>
-            </div>
-
-            <footer class="input-footer-area">
-                <div class="uploaded-preview-holder" id="uploadedPreviewHolder">
-                    <img src="" id="targetImgPreviewNode" alt="Preview">
-                </div>
-                <div class="bar-input-container">
-                    <label for="fileAttachmentTrigger" class="btn-icon-trigger"><i class="fa-solid fa-paperclip"></i></label>
-                    <input type="file" id="fileAttachmentTrigger" accept="image/*" style="display: none;" onchange="handleIncomingImageUpload(this)">
-                    
-                    <textarea id="mainChatTextInputNode" placeholder="اكتب سؤالك الخارق هنا..."></textarea>
-                    
-                    <button class="btn-send-rocket" onclick="commitUserMessageAction()"><i class="fa-solid fa-paper-plane"></i></button>
-                </div>
-            </footer>
-        </main>
+            <button class="btn-matrix" id="login-btn">تحقق من الهوية والدخول</button>
+            <div class="error-msg" id="error-msg">رمز الدخول غير صحيح، تم تسجيل محاولة الدخول الفاشلة.</div>
+        </div>
     </div>
 
-    <script>
-        const CLOUDFLARE_WORKER_ROUTE = "https://lively-night-9b33.talah2026-2.workers.dev";
-        const FIREBASE_REALTIME_ROUTE = "https://ai-negm-default-rtdb.firebaseio.com";
-        
-        let globalActiveImageBase64 = null;
-        let systemConversationsCache = [];
-        let activeChatSessionId = null;
+    <!-- 🚀 MATRIX COMMAND CENTER DASHBOARD VIEW -->
+    <div id="dashboard-container">
+        <div class="dashboard-header">
+            <div>
+                <h2>لوحة تحكم المالك الرئيسية Matrix Center</h2>
+                <div class="system-status" style="margin-top: 5px;">
+                    <div class="status-indicator"></div>
+                    <span style="font-size: 0.8rem; color: var(--text-secondary);">النظام متصل بالسيرفر Edge بنجاح • استجابة 7ms</span>
+                </div>
+            </div>
+            <div style="text-align: left;">
+                <div style="font-weight: 600; color: var(--cyber-gold);">مرحباً يا محمد (المالك)</div>
+                <div style="font-size: 0.75rem; color: var(--text-secondary)">المعرف المعتمد للمالك: #7795495001</div>
+            </div>
+        </div>
 
-        // --- 1. 🎬 كود محرك السينما المتحرك (Interactive Canvas Lines) ---
-        const canvas = document.getElementById('bg-canvas');
+        <!-- Metric Indicators Grid -->
+        <div class="matrix-grid">
+            <div class="metric-card glass-panel">
+                <div class="metric-title">إجمالي المستخدمين المسجلين</div>
+                <div class="metric-value gold">1,248</div>
+            </div>
+            <div class="metric-card glass-panel">
+                <div class="metric-title">طلبات الذكاء الاصطناعي اليوم</div>
+                <div class="metric-value">42,892</div>
+            </div>
+            <div class="metric-card glass-panel">
+                <div class="metric-title">إجمالي الاشتراكات والتحويلات</div>
+                <div class="metric-value gold">EGP 24,600</div>
+            </div>
+            <div class="metric-card glass-panel">
+                <div class="metric-title">استهلاك خادم الداتا والـ API</div>
+                <div class="metric-value" style="color: var(--accent-green);">99.98%</div>
+            </div>
+        </div>
+
+        <!-- Inner Content Grid Layout -->
+        <div class="content-layout">
+            <!-- Table Panel -->
+            <div class="main-panel glass-panel">
+                <div class="panel-title">إدارة حسابات المستخدمين الجدد والنشطين</div>
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th>المستخدم / UID</th>
+                            <th>كود الدخول</th>
+                            <th>الخطة الحالية</th>
+                            <th>النقاط اليومية</th>
+                            <th>حساب Telegram</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>أحمد محمود (#NE5821)</td>
+                            <td>NG4921</td>
+                            <td><span class="badge badge-vip">VIP Matrix</span></td>
+                            <td>4,000 نقطة</td>
+                            <td style="color: var(--accent-green);">مرتبط مفعّل</td>
+                            <td>
+                                <button class="action-btn">تعديل</button>
+                                <button class="action-btn" style="border-color: var(--accent-red); color: var(--accent-red);">حظر</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>محمد علي (#NE9362)</td>
+                            <td>NG8821</td>
+                            <td><span class="badge badge-pro">Pro Plan</span></td>
+                            <td>2,000 نقطة</td>
+                            <td style="color: var(--accent-green);">مرتبط مفعّل</td>
+                            <td>
+                                <button class="action-btn">تعديل</button>
+                                <button class="action-btn" style="border-color: var(--accent-red); color: var(--accent-red);">حظر</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>كريم الصاوي (#NE1129)</td>
+                            <td>NG0392</td>
+                            <td><span class="badge badge-free">Free User</span></td>
+                            <td>300 نقطة</td>
+                            <td style="color: var(--text-secondary);">غير مرتبط</td>
+                            <td>
+                                <button class="action-btn">تعديل</button>
+                                <button class="action-btn" style="border-color: var(--accent-red); color: var(--accent-red);">حظر</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Terminal/Console Logs Side Panel -->
+            <div class="side-panel glass-panel">
+                <div class="panel-title">مراقبة الأحداث والـ Logs الفورية</div>
+                <div class="console-box" id="system-console">
+                    <div class="console-line">[<span class="gold">SYS</span>] تم تشغيل واجهة المالك الرسومية الموحدة V3 بنجاح.</div>
+                    <div class="console-line">[<span class="green">AUTH</span>] نجاح مطابقة رمز مالك النظام الآمن 2009.</div>
+                    <div class="console-line">[<span class="gold">WORKER</span>] استقبال إشارة حيوية من lively-night-9b33 Edge Worker.</div>
+                </div>
+                <div style="margin-top: 15px;">
+                    <button class="btn-matrix" style="padding: 10px; font-size: 0.85rem;" id="broadcast-trigger">📢 إرسال بث جماعي فوري للمشتركين والتليجرام</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ⚡ SYSTEM JAVASCRIPT CONTROL MATRIX -->
+    <script>
+        // 1. Mouse Glowing Tracker Animation
+        const glow = document.getElementById('mouse-glow');
+        document.addEventListener('mousemove', (e) => {
+            glow.style.top = e.clientY + 'px';
+            glow.style.left = e.clientX + 'px';
+        });
+
+        // 2. Auth Core Engine Logic
+        const loginBtn = document.getElementById('login-btn');
+        const ownerCodeInput = document.getElementById('owner-code');
+        const errorMsg = document.getElementById('error-msg');
+        const authContainer = document.getElementById('auth-container');
+        const dashboardContainer = document.getElementById('dashboard-container');
+        const consoleBox = document.getElementById('system-console');
+
+        function addConsoleLine(type, msg) {
+            const line = document.createElement('div');
+            line.className = 'console-line';
+            const time = new Date().toLocaleTimeString();
+            if (type === 'err') {
+                line.innerHTML = `[${time}] [<span style="color:#ff4a4a">ERROR</span>] ${msg}`;
+            } else {
+                line.innerHTML = `[${time}] [<span class="gold">LIVE</span>] ${msg}`;
+            }
+            consoleBox.appendChild(line);
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+        }
+
+        loginBtn.addEventListener('click', () => {
+            const code = ownerCodeInput.value.trim();
+            if (code === '2009') {
+                // Perfect Auth Transition Flow
+                errorMsg.style.opacity = '0';
+                authContainer.style.opacity = '0';
+                authContainer.style.transform = 'scale(0.9) translateY(-30px)';
+                
+                setTimeout(() => {
+                    authContainer.style.display = 'none';
+                    dashboardContainer.style.display = 'block';
+                    setTimeout(() => {
+                        dashboardContainer.style.opacity = '1';
+                    }, 50);
+                }, 600);
+            } else {
+                errorMsg.style.opacity = '1';
+                ownerCodeInput.value = '';
+                ownerCodeInput.focus();
+            }
+        });
+
+        ownerCodeInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') loginBtn.click();
+        });
+
+        // 3. Simulated Live Database/AI Events Log Activity
+        const liveEvents = [
+            "طلب شات جديد عبر نموذج DeepSeek-R1 للمستخدم #NE5821",
+            "قام المستخدم #NE9362 بشحن حسابه عبر فودافون كاش - انتظار التأكيد",
+            "بوت التليجرام استقبل تحديث تفاعلي /points من معرّف 8754338811",
+            "تحديث استهلاك البيانات التلقائي لقاعدة بيانات Firebase Realtime",
+            "مزامنة ناجحة لـ Cloudflare Turnstile الأمنية على صفحة التسجيل"
+        ];
+
+        setInterval(() => {
+            if (dashboardContainer.style.display === 'block') {
+                const randomMsg = liveEvents[Math.floor(Math.random() * liveEvents.length)];
+                addConsoleLine('live', randomMsg);
+            }
+        }, 5000);
+
+        // 4. Matrix Canvas Background Particles Generation
+        const canvas = document.getElementById('canvas-particles');
         const ctx = canvas.getContext('2d');
-        let points = [];
-        const maxPoints = 55;
+        let particles = [];
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -482,253 +572,50 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        for (let i = 0; i < maxPoints; i++) {
-            points.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 0.9,
-                vy: (Math.random() - 0.5) * 0.9
-            });
-        }
-
-        function animateCinemaBackground() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(0, 240, 255, 0.4)";
-            
-            for (let i = 0; i < maxPoints; i++) {
-                let p = points[i];
-                p.x += p.vx;
-                p.y += p.vy;
-
-                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-                ctx.fill();
-
-                for (let j = i + 1; j < maxPoints; j++) {
-                    let p2 = points[j];
-                    let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-                    if (dist < 135) {
-                        ctx.strokeStyle = `rgba(0, 240, 255, ${1 - dist / 135 * 0.18})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.stroke();
-                    }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedY = Math.random() * -0.5 - 0.2;
+                this.alpha = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.y += this.speedY;
+                if (this.y < 0) {
+                    this.y = canvas.height;
+                    this.x = Math.random() * canvas.width;
                 }
             }
-            requestAnimationFrame(animateCinemaBackground);
-        }
-        animateCinemaBackground();
-
-        // --- 2. 💾 نظام حفظ واسترجاع التهيئة لمنع ضياع البيانات (LocalStorage) ---
-        function initAppPersistenceState() {
-            // استرجاع الإعدادات المخصصة للمالك إن وجدت
-            if(localStorage.getItem("negm_site_name")) {
-                const customName = localStorage.getItem("negm_site_name");
-                document.getElementById("site-name-title").innerText = customName;
-                document.getElementById("welcome-message-h2").innerText = `مرحباً بك في سيرفر ${customName} المطور`;
-                document.getElementById("meta-title").innerText = `${customName} | الذكاء الاصطناعي الخارق`;
-            }
-            if(localStorage.getItem("negm_site_logo")) {
-                const customLogo = localStorage.getItem("negm_site_logo");
-                document.getElementById("site-logo-img").src = customLogo;
-                document.getElementById("meta-og-image").content = customLogo;
-            }
-
-            // استعادة المحادثات السابقة بالكامل لعدم ضياع أي شيء بالريفريش
-            if(localStorage.getItem("negm_chat_history")) {
-                systemConversationsCache = JSON.parse(localStorage.getItem("negm_chat_history"));
-                renderConversationsSidebar();
+            draw() {
+                ctx.fillStyle = `rgba(212, 175, 55, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
 
-        // --- 3. 👑 إدارة وصلاحيات لوحة المالك ---
-        function applyOwnerCustomizations() {
-            const nameInp = document.getElementById("owner-site-name-input").value.trim();
-            const logoInp = document.getElementById("owner-logo-url-input").value.trim();
-
-            if(nameInp) {
-                localStorage.setItem("negm_site_name", nameInp);
-                document.getElementById("site-name-title").innerText = nameInp;
-            }
-            if(logoInp) {
-                localStorage.setItem("negm_site_logo", logoInp);
-                document.getElementById("site-logo-img").src = logoInp;
-            }
-            alert("👑 تم حفظ التخصيصات الداخلية للمالك في كاش المتصفح والنظام بنجاح!");
+        for (let i = 0; i < 60; i++) {
+            particles.push(new Particle());
         }
 
-        function toggleSystemMaintenanceMode() {
-            const banner = document.getElementById("maintenanceAlertBanner");
-            const currentStatus = banner.style.display === "flex";
-            banner.style.display = currentStatus ? "none" : "flex";
-            
-            fetch(`${FIREBASE_REALTIME_ROUTE}/site_settings/maintenance.json`, {
-                method: "PUT",
-                body: JSON.stringify(!currentStatus)
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
             });
+            requestAnimationFrame(animate);
         }
+        animate();
 
-        // --- 4. معالجة عمليات الشات والرفع ---
-        function handleIncomingImageUpload(input) {
-            const file = input.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    globalActiveImageBase64 = e.target.result;
-                    document.getElementById("targetImgPreviewNode").src = globalActiveImageBase64;
-                    document.getElementById("uploadedPreviewHolder").style.display = "block";
-                };
-                reader.readAsDataURL(file);
+        // Broadcast Button simulation
+        document.getElementById('broadcast-trigger').addEventListener('click', () => {
+            const msg = prompt("أدخل نص الإشعار العام لإرساله فوراً للموقع والتليجرام:");
+            if (msg) {
+                addConsoleLine('live', `📢 تم إرسال بث لجميع المشتركين وبوت Telegram: ${msg}`);
             }
-        }
-
-        async function commitUserMessageAction() {
-            const txtNode = document.getElementById("mainChatTextInputNode");
-            const promptText = txtNode.value.trim();
-            if(!promptText && !globalActiveImageBase64) return;
-
-            // 👑 الشفرة السرية للدخول للمالك
-            if (promptText === "2009") {
-                document.getElementById("ownerControlPanel").style.display = "block";
-                txtNode.value = "";
-                alert("👑 تم التحقق من الكود السري بنجاح: أهلاً بك يا نجم في الخلوة الإدارية للمالك.");
-                return;
-            }
-
-            document.getElementById("emptyWelcomeView").style.display = "none";
-            
-            if(!activeChatSessionId) {
-                activeChatSessionId = "chat_" + Date.now();
-            }
-
-            appendBubbleToUI("user", promptText, globalActiveImageBase64);
-            txtNode.value = "";
-
-            // حفظ الرسالة في الكاش قبل الإرسال لمنع ضياعها
-            storeMessageInCache(activeChatSessionId, "user", promptText, globalActiveImageBase64);
-
-            const imgPayload = globalActiveImageBase64;
-            globalActiveImageBase64 = null;
-            document.getElementById("uploadedPreviewHolder").style.display = "none";
-
-            try {
-                const chosenModel = document.getElementById("modelSelectionNode").value;
-                const response = await fetch(CLOUDFLARE_WORKER_ROUTE, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        model: chosenModel,
-                        messages: [{ role: "user", content: promptText }]
-                    })
-                });
-
-                const data = await response.json();
-                const aiResponseContent = data.choices[0].message.content;
-                
-                appendBubbleToUI("ai", aiResponseContent);
-                storeMessageInCache(activeChatSessionId, "ai", aiResponseContent, null);
-
-                // مزامنة خلفية مع فايربيز
-                syncLogWithFirebase(promptText);
-
-            } catch (err) {
-                appendBubbleToUI("ai", "تعذر الحصول على استجابة فورية من سيرفر الـ Worker الخاص بك.");
-            }
-        }
-
-        function appendBubbleToUI(role, text, img = null) {
-            const viewport = document.getElementById("messagesViewportContainer");
-            const wrapper = document.createElement("div");
-            wrapper.className = `bubble-wrapper ${role === 'user' ? 'user-side' : 'ai-side'}`;
-            
-            let bubbleMarkup = `<div class="chat-bubble"><p>${text}</p>`;
-            if(img) {
-                bubbleMarkup += `<img src="${img}" style="max-width:100%; border-radius:12px; margin-top:10px; display:block; border:1px solid rgba(255,255,255,0.1);">`;
-            }
-            bubbleMarkup += `</div>`;
-            
-            wrapper.innerHTML = bubbleMarkup;
-            viewport.appendChild(wrapper);
-            viewport.scrollTop = viewport.scrollHeight;
-        }
-
-        function storeMessageInCache(chatId, role, text, img) {
-            let chat = systemConversationsCache.find(c => c.id === chatId);
-            if(!chat) {
-                chat = { id: chatId, title: text ? text.substring(0, 25) + "..." : "معاينة صورة", messages: [] };
-                systemConversationsCache.push(chat);
-            }
-            chat.messages.push({ role, text, img });
-            localStorage.setItem("negm_chat_history", JSON.stringify(systemConversationsCache));
-            renderConversationsSidebar();
-        }
-
-        function renderConversationsSidebar() {
-            const viewBox = document.getElementById("historyViewBox");
-            viewBox.innerHTML = "";
-            systemConversationsCache.forEach(chat => {
-                const item = document.createElement("div");
-                item.className = "history-item";
-                item.innerText = chat.title;
-                item.onclick = () => loadActiveChatFromCache(chat.id);
-                viewBox.appendChild(item);
-            });
-        }
-
-        function loadActiveChatFromCache(chatId) {
-            activeChatSessionId = chatId;
-            document.getElementById("emptyWelcomeView").style.display = "none";
-            const viewport = document.getElementById("messagesViewportContainer");
-            // مسح الشاشة الحالية وعرض القديم المخزن
-            viewport.innerHTML = "";
-            const chat = systemConversationsCache.find(c => c.id === chatId);
-            if(chat) {
-                chat.messages.forEach(m => {
-                    appendBubbleToUI(m.role, m.text, m.img);
-                });
-            }
-        }
-
-        function createNewChatSession() {
-            activeChatSessionId = null;
-            document.getElementById("messagesViewportContainer").innerHTML = `
-                <div class="screen-empty-welcome" id="emptyWelcomeView">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    <h2 id="welcome-message-h2">مرحباً بك في سيرفر NEGM AI المطور</h2>
-                    <p>الخلفية متفاعلة والذكاء الاصطناعي مهيأ وجاهز لتقديم أقصى أداء ثوري...</p>
-                </div>`;
-            initAppPersistenceState();
-        }
-
-        function exportDatabaseState() {
-            const blob = new Blob([JSON.stringify(systemConversationsCache, null, 2)], {type : 'application/json'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `backup_negm_ai_${Date.now()}.json`;
-            a.click();
-        }
-
-        function wipeLocalCacheData() {
-            if(confirm("هل تود مسح الذاكرة المحلية نهائياً؟")) {
-                localStorage.clear();
-                location.reload();
-            }
-        }
-
-        function syncLogWithFirebase(msg) {
-            fetch(`${FIREBASE_REALTIME_ROUTE}/logs.json`, {
-                method: "POST",
-                body: JSON.stringify({ event: "chat_query", query: msg, time: new Date().toISOString() })
-            });
-        }
-
-        // تشغيل فحص البيانات عند التحميل الأول
-        window.addEventListener("DOMContentLoaded", initAppPersistenceState);
+        });
     </script>
 </body>
 </html>
